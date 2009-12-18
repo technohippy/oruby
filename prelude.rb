@@ -34,7 +34,7 @@ def require_relative(relative_feature)
   require absolute_feature
 end
 
-require 'smalltalk'
+require 'smalltalk/smalltalk'
 class String
   def smalltalk(bind)
     st = SmalltalkParser.new.parse(self)
