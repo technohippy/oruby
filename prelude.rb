@@ -33,3 +33,11 @@ def require_relative(relative_feature)
   absolute_feature = File.expand_path(File.join(File.dirname(file), relative_feature))
   require absolute_feature
 end
+
+require 'smalltalk'
+class String
+  def smalltalk(bind)
+    st = SmalltalkParser.new.parse(self)
+    eval(st, bind)
+  end
+end

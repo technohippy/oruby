@@ -659,7 +659,7 @@ static void token_info_pop(struct parser_params*, const char *token);
 %token <node> tNTH_REF tBACK_REF
 %token <num>  tREGEXP_END
 
-%type <node> singleton strings string string1 xstring regexp
+%type <node> singleton strings string string1 xstring objective regexp
 %type <node> string_contents xstring_contents string_content
 %type <node> words qwords word_list qword_list word
 %type <node> literal numeric dsym cpath
@@ -752,6 +752,8 @@ static void token_info_pop(struct parser_params*, const char *token);
 %nonassoc id_core_define_method
 %nonassoc id_core_define_singleton_method
 %nonassoc id_core_set_postexe
+
+%token tOBJECTIVE_BEG
 
 %token tLAST_TOKEN
 
@@ -2498,6 +2500,7 @@ mrhs		: args ',' arg_value
 primary		: literal
 		| strings
 		| xstring
+		| objective
 		| regexp
 		| words
 		| qwords
@@ -3803,6 +3806,24 @@ xstring		: tXSTRING_BEG xstring_contents tSTRING_END
 				node = NEW_NODE(NODE_DXSTR, Qnil, 1, NEW_LIST(node));
 				break;
 			    }
+			}
+			$$ = node;
+		    /*%
+			$$ = dispatch1(xstring_literal, $2);
+		    %*/
+		    }
+		;
+
+objective	: tOBJECTIVE_BEG xstring_contents tSTRING_END
+		    {
+		    /*%%%*/
+			NODE *cNode = $2;
+			NODE *node;
+			if (!cNode) {
+			    node = NEW_STR(STR_NEW0());
+			}
+			else {
+			    node = NEW_CALL(cNode, rb_intern("smalltalk"), NEW_LIST(NEW_VCALL(rb_intern("binding"))));
 			}
 			$$ = node;
 		    /*%
@@ -7313,6 +7334,10 @@ parser_yylex(struct parser_params *parser)
 	      case 'x':
 		lex_strterm = NEW_STRTERM(str_xquote, term, paren);
 		return tXSTRING_BEG;
+
+	      case 'o':
+		lex_strterm = NEW_STRTERM(str_xquote, term, paren);
+		return tOBJECTIVE_BEG;
 
 	      case 'r':
 		lex_strterm = NEW_STRTERM(str_regexp, term, paren);

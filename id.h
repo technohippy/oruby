@@ -3,7 +3,7 @@
 
   id.h -
 
-  $Author: nobu $
+  $Author$
   created at: Sun Oct 19 21:12:51 2008
 
   Copyright (C) 2007 Koichi Sasada
@@ -67,7 +67,8 @@ enum ruby_method_ids {
     id_core_define_method = 372,
     id_core_define_singleton_method = 373,
     id_core_set_postexe = 374,
-    tLAST_TOKEN = 375,
+    /*tLAST_TOKEN = 375,*/
+    tLAST_TOKEN = 376,
 #endif
     idDot2 = tDOT2,
     idDot3 = tDOT3,
@@ -161,7 +162,8 @@ ruby_method_id_check_for(id_core_undef_method, 371);
 ruby_method_id_check_for(id_core_define_method, 372);
 ruby_method_id_check_for(id_core_define_singleton_method, 373);
 ruby_method_id_check_for(id_core_set_postexe, 374);
-ruby_method_id_check_for(tLAST_TOKEN, 375);
+/*ruby_method_id_check_for(tLAST_TOKEN, 375);*/
+ruby_method_id_check_for(tLAST_TOKEN, 376);
 };
 #endif
 
