@@ -140,16 +140,28 @@ class Object
 end
 
 class Proc
+  def while_true(true_proc)
+    true_proc.call while self.call 
+  end
+end
+
+class TrueClass
   def if_true(true_proc, false_proc=lambda{})
-    self.call ? true_proc.call : false_proc.call
+    true_proc.call
   end
 
   def if_false(false_proc, true_proc=lambda{})
-    self.call ? true_proc.call : false_proc.call
+    true_proc.call
+  end
+end
+
+class FalseClass
+  def if_true(true_proc, false_proc=lambda{})
+    false_proc.call
   end
 
-  def while_true(true_proc)
-    true_proc.call while self.call 
+  def if_false(false_proc, true_proc=lambda{})
+    false_proc.call
   end
 end
 
